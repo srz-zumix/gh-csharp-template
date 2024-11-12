@@ -40,12 +40,12 @@ FLAGS
 " "${1-0}"
 }
 
-parse_params() {
-  COMMAND_NAME=
-  ORGANIZATION=
-  EXTENSION_NAME=
-  DOTNET_NEW_OPTIONS=()
+COMMAND_NAME=
+ORGANIZATION=
+EXTENSION_NAME=
+DOTNET_NEW_OPTIONS=()
 
+parse_params() {
   while :; do
     case "${1-}" in
       install | new)
@@ -128,7 +128,7 @@ new_template() {
   fi
 
   DOTNET_NEW_OPTIONS+=("--Organization" "${ORGANIZATION}")
-  # DOTNET_NEW_OPTIONS+=("--name" "${EXTENSION_NAME}")
+  DOTNET_NEW_OPTIONS+=("--name" "${EXTENSION_NAME}")
   dotnet new gh-extension "${DOTNET_NEW_OPTIONS[@]}"
 }
 
