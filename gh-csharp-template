@@ -112,7 +112,11 @@ check_dotnet() {
 
 install() {
   msg "Installing gh-extension..."
-  dotnet new install "${SCRIPT_DIR}" "${DOTNET_NEW_OPTIONS[@]}"
+  if [ "${#DOTNET_NEW_OPTIONS[@]}" != 0 ]; then
+    dotnet new install "${SCRIPT_DIR}" "${DOTNET_NEW_OPTIONS[@]}"
+  else
+    dotnet new install "${SCRIPT_DIR}"
+  fi
 }
 
 new_template() {
