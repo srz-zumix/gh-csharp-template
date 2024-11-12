@@ -57,13 +57,20 @@
             "defaultValue": "<your organization>"
         }
     },
-    "forms": {
-        "dotToUnderscore": {
-        "identifier": "replace",
-        "pattern": "\\.",
-        "replacement": "_"
+    "postActions": [
+        {
+            "condition": "(OS != \"Windows_NT\")",
+            "description": "Make scripts executable",
+            "manualInstructions": [{
+                "text": "Run 'chmod +x *.sh'"
+            }],
+            "actionId": "cb9a6cf3-4f5c-4860-b9d2-03a574959774",
+            "args": {
+                "+x": "script/build.sh"
+            },
+            "continueOnError": true
         }
-    },
+    ],
     "guids": [
         "7EBF8038-2854-421F-8B8A-525A08ADCB26",
         "D3B343C4-8BC5-4A59-A0F7-BE210F0F47E6"
