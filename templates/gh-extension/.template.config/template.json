@@ -55,6 +55,23 @@
             "datatype": "text",
             "replaces": "GitHubOrganizationName",
             "defaultValue": "<your organization>"
+        },
+        "DotNetVersion": {
+            "type": "parameter",
+            "description": "The target framework for the project.",
+            "datatype": "choice",
+            "choices": [
+                {
+                    "choice": "8.0",
+                    "description": "Target net8.0"
+                },
+                {
+                    "choice": "9.0",
+                    "description": "Target net9.0"
+                }
+            ],
+            "replaces": "DotNetVersion",
+            "defaultValue": "8.0"
         }
     },
     "postActions": [

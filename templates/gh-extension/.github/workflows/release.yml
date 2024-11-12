@@ -11,14 +11,14 @@ on:
       release_tag:
         type: string
         required: true
-      
+
 permissions:
   contents: write
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  DOTNET_VERSION: "8.0.x"
-  
+  DOTNET_VERSION: "DotNetVersion"
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -35,4 +35,4 @@ jobs:
         with:
           build_script_override: script/build.sh
           release_tag: ${{ inputs.release_tag || github.ref }}
-          
+

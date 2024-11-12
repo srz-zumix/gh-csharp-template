@@ -9,7 +9,7 @@ concurrency:
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  DOTNET_VERSION: "8.0.x"
+  DOTNET_VERSION: "8.0"
   GH_TOKEN: ${{ github.token }}
 
 jobs:
