@@ -41,4 +41,5 @@ jobs:
         run: script/build.sh
       - name: list dist
         working-directory: gh-csharp-extension-test
-        run: ls -l dist
+        shell: pwsh
+        run: Get-ChildItem -Path dist
