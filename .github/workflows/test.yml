@@ -29,6 +29,8 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: Install gh extension
         run: gh extension install .
+      - name: Install template
+        run: gh csharp-template install
       - name: Create new project
         run: |
           mkdir -p gh-csharp-extension-test
