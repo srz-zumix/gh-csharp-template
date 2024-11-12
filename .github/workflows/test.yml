@@ -38,6 +38,7 @@ jobs:
           gh csharp-template new
       - name: Build new project
         working-directory: gh-csharp-extension-test
+        shell: bash
         run: script/build.sh
       - name: list dist
         working-directory: gh-csharp-extension-test
