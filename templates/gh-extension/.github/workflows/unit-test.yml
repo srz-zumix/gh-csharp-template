@@ -1,0 +1,46 @@
+name: Unit Test
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_VERSION: "DotNetVersion"
+
+jobs:
+  unit-test:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.os}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Restore
+        run: dotnet restore --no-cache
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Test
+        run: dotnet test --no-build -v normal --logger "trx;LogFileName=result.xml"
+      - name: Generate test report
+        uses: dorny/test-reporter@v1.9
+        if: success() || failure()
+        with:
+          name: Test Report
+          path: '**/TestResults/*.xml'
+          reporter: dotnet-trx

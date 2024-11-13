@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd -P)
+
+msg() {
+  echo >&2 -e "${1-}"
+}
+
+die() {
+  local msg=$1
+  local code=${2-1} # default exit status 1
+  msg "$msg"
+  exit "$code"
+}
+
+usage() {
+  # shellcheck disable=SC1078
+  die "gh-csharp-template
+
+USAGE
+  gh csharp-template <command> [flags]
+
+COMMANDS
+  install:    Install dotnet new template
+  new:        Create a new project
+
+FLAGS
+  -h,--help   Show help for command
+  -- [...]    Pass flags to dotnet install/new command
+
+  install:
+    -f,--force   Force install
+  new:
+    -f,--force                        Force overwrite existing files
+    -D,--Description  <description>   Description of the project
+    -O,--Organization <organization>  GitHub organization. default: provided by gh cli
+    -n,--name         <name>          Name of the project. default: current directory name
+
+" "${1-0}"
+}
+
+COMMAND_NAME=
+ORGANIZATION=
+EXTENSION_NAME=
+DOTNET_NEW_OPTIONS=()
+
+parse_params() {
+  while :; do
+    case "${1-}" in
+      install | new)
+        if [ -z "${COMMAND_NAME}" ]; then
+          COMMAND_NAME="$1"
+        else
+          die "Multiple commands specified: ${COMMAND_NAME} and $1"
+        fi
+        ;;
+      -f | --force)
+        DOTNET_NEW_OPTIONS+=("--force")
+        ;;
+      -D | --Description)
+        if [ "${COMMAND_NAME}" != "new" ]; then
+          die "Option --Description is only valid for the 'new' command"
+        fi
+        DOTNET_NEW_OPTIONS+=("--Description" "${2-}")
+        shift
+        ;;
+      -O | --Organization)
+        if [ "${COMMAND_NAME}" != "new" ]; then
+          die "Option --Description is only valid for the 'new' command"
+        fi
+        ORGANIZATION="${2-}"
+        shift
+        ;;
+      -n | --name)
+        if [ "${COMMAND_NAME}" != "new" ]; then
+          die "Option --name is only valid for the 'new' command"
+        fi
+        EXTENSION_NAME="${2-}"
+        shift
+        ;;
+      -h | --help)
+        if [ "${COMMAND_NAME}" == "" ]; then
+          usage 0
+        else
+          DOTNET_NEW_OPTIONS+=("--help")
+        fi
+        ;;
+      -- )
+        shift
+        DOTNET_NEW_OPTIONS+=("$@")
+        break ;;
+      -?*)
+        die "Unknown option: $1"
+        ;;
+      *)
+        break
+        ;;
+    esac
+    shift
+  done
+  return 0
+}
+
+parse_params "$@"
+
+check_dotnet() {
+  if ! command -v dotnet &>/dev/null; then
+    die "dotnet CLI is required to run this script"
+  fi
+}
+
+install() {
+  msg "Installing gh-extension..."
+  if [ "${#DOTNET_NEW_OPTIONS[@]}" != 0 ]; then
+    dotnet new install "${SCRIPT_DIR}" "${DOTNET_NEW_OPTIONS[@]}"
+  else
+    dotnet new install "${SCRIPT_DIR}"
+  fi
+}
+
+new_template() {
+  msg "Creating a new project..."
+  if [ -z "${ORGANIZATION}" ]; then
+    ORGANIZATION=$(gh repo view --json owner --jq '.owner.login')
+  fi
+  if [ -z "${EXTENSION_NAME}" ]; then
+    EXTENSION_NAME=$(basename "$(pwd)")
+  fi
+  if ! [[ "${EXTENSION_NAME}" =~ gh- ]]; then
+    die "Extension name must start with 'gh-'"
+  fi
+
+  DOTNET_NEW_OPTIONS+=("--Organization" "${ORGANIZATION}")
+  DOTNET_NEW_OPTIONS+=("--name" "${EXTENSION_NAME}")
+  dotnet new gh-extension "${DOTNET_NEW_OPTIONS[@]}"
+}
+
+if [ -z "${COMMAND_NAME}" ]; then
+  usage 1
+fi
+
+check_dotnet
+
+case "${COMMAND_NAME}" in
+  install)
+    install
+    ;;
+  new)
+    new_template
+    ;;
+  *)
+    die "Unknown command: ${COMMAND_NAME}"
+    ;;
+esac

@@ -1,0 +1,95 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "srz-zumix",
+    "classifications": [
+        "Console",
+        "GhExtension"
+    ],
+    "identity": "gh-csharp-extension",
+    "name": "gh c# extension template",
+    "shortName": "gh-extension",
+    "sourceName": "AppNameSource",
+    "tags": {
+        "language": "C#",
+        "type": "solution"
+    },
+    "symbols": {
+        "GhCSharpExtension": {
+            "type": "generated",
+            "generator": "regex",
+            "parameters": {
+                "source": "name",
+                "steps": []
+            },
+            "replaces": "GhCSharpExtension",
+            "fileRename": "GhCSharpExtension"
+        },
+        "AppNameTitleCase": {
+            "type": "derived",
+            "valueSource": "name",
+            "valueTransform": "titleCase",
+            "replaces": "AppNameTitleCase"
+        },
+        "AppNameNamespace": {
+            "type": "generated",
+            "generator": "regex",
+            "parameters": {
+                "source": "AppNameTitleCase",
+                "steps": [
+                    {
+                        "regex": "-",
+                        "replacement": ""
+                    }
+                ]
+            },
+            "replaces": "AppNameNamespace"
+        },
+        "Description": {
+            "type": "parameter",
+            "datatype": "text",
+            "replaces": "ExtensionDescription",
+            "defaultValue": "gh C# extension"
+        },
+        "Organization": {
+            "type": "parameter",
+            "datatype": "text",
+            "replaces": "GitHubOrganizationName",
+            "defaultValue": "<your organization>"
+        },
+        "DotNetVersion": {
+            "type": "parameter",
+            "description": "The target framework for the project.",
+            "datatype": "choice",
+            "choices": [
+                {
+                    "choice": "8.0",
+                    "description": "Target net8.0"
+                },
+                {
+                    "choice": "9.0",
+                    "description": "Target net9.0"
+                }
+            ],
+            "replaces": "DotNetVersion",
+            "defaultValue": "8.0"
+        }
+    },
+    "postActions": [
+        {
+            "condition": "(OS != \"Windows_NT\")",
+            "description": "Make scripts executable",
+            "manualInstructions": [{
+                "text": "Run 'chmod +x *.sh'"
+            }],
+            "actionId": "cb9a6cf3-4f5c-4860-b9d2-03a574959774",
+            "args": {
+                "+x": "script/build.sh"
+            },
+            "continueOnError": true
+        }
+    ],
+    "guids": [
+        "7EBF8038-2854-421F-8B8A-525A08ADCB26",
+        "D3B343C4-8BC5-4A59-A0F7-BE210F0F47E6"
+    ]
+}
