@@ -6,6 +6,7 @@ This extension supports the installation and generation of templates for C# gh e
 
 ```sh
 gh extension install srz-zumix/gh-csharp-template
+gh csharp-template install
 ```
 
 ## Create new project
@@ -13,7 +14,6 @@ gh extension install srz-zumix/gh-csharp-template
 1. Create new repository gh-\<your extension name>
 1. git clone
 1. cd \<clone directory>
-1. gh csharp-template install
 1. gh csharp-template new
 
 ## Upgrade this extension
