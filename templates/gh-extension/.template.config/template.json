@@ -74,11 +74,6 @@
             "defaultValue": "8.0"
         }
     },
-    "primaryOutputs": [
-        {
-          "path": "GhCSharpExtension"        
-        }
-    ],    
     "postActions": [
         {
             "condition": "(OS != \"Windows_NT\")",
@@ -90,10 +85,22 @@
             "args": {
                 "+x": [
                     "script/build.sh",
-                    "GhCSharpExtension"
+                    "script/setup.sh"
                 ]
             },
             "continueOnError": true
+        },
+        {
+            "condition": "(OS != \"Windows_NT\")",
+            "description": "Make scripts executable",
+            "manualInstructions": [{
+                "text": "Run 'chmod +x gh-*'"
+            }],
+            "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+            "args": {
+                "executable": "script/setup.sh",
+                "args": ""
+            }
         }
     ],
     "guids": [
