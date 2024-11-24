@@ -79,11 +79,17 @@
             "condition": "(OS != \"Windows_NT\")",
             "description": "Make scripts executable",
             "manualInstructions": [{
-                "text": "Run 'chmod +x *.sh'"
+                "text": "Run 'chmod +x'"
             }],
             "actionId": "cb9a6cf3-4f5c-4860-b9d2-03a574959774",
             "args": {
-                "+x": "script/build.sh"
+                "+x": [
+                    "script/build.sh",
+                    "gh-*"
+                ],
+                "-x": [
+                    "gh-*.sln"
+                ]
             },
             "continueOnError": true
         }

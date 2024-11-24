@@ -46,3 +46,9 @@ jobs:
         working-directory: gh-csharp-extension-test
         shell: pwsh
         run: Get-ChildItem -Path dist
+      - name: Install development gh extension
+        working-directory: gh-csharp-extension-test
+        run: gh extension install .
+      - name: Run gh development command
+        working-directory: gh-csharp-extension-test
+        run: gh csharp-extension-test
