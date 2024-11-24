@@ -13,7 +13,7 @@ cd <repository-directory>
 
 * Create extension commands
 
-Edit the source files in the GhCSharpExtension directory. The main entry point is in Program.cs.
+Edit the source files in the GhCSharpExtension.Command directory. The main entry point is in Program.cs.
 
 We are using [Cocona][] as the framework for the console application.
 Refer to the [Cocona][] documentation for instructions on how to implement the command.

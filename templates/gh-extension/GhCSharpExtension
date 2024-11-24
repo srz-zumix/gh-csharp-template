@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+EXTENSION_NAME=$(basename "${BASH_SOURCE[0]}")
+
+make build -C "${SCRIPT_DIR}" --silent
+
+"${SCRIPT_DIR}/${EXTENSION_NAME}.Command/bin/Debug/netDotNetVersion/${EXTENSION_NAME}" "$@"
