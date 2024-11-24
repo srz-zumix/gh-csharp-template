@@ -74,6 +74,11 @@
             "defaultValue": "8.0"
         }
     },
+    "primaryOutputs": [
+        {
+          "path": "GhCSharpExtension"        
+        }
+    ],    
     "postActions": [
         {
             "condition": "(OS != \"Windows_NT\")",
