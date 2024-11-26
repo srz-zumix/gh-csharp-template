@@ -11,8 +11,7 @@ gh csharp-template install
 
 ## Create new project
 
-1. Create new repository gh-\<your extension name>
-1. git clone
+1. gh repo create --public --clone gh-\<your extension name>
 1. cd \<clone directory>
 1. gh csharp-template new
 
